@@ -1,31 +1,27 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
+import org.apache.commons.io.IOUtils;
 
 public class PuzzleHelper {
   public static String readInputString(String fileName) throws IOException {
-    ClassLoader classLoader = PuzzleHelper.class.getClassLoader();
-    InputStream inputStream = classLoader.getResourceAsStream(fileName);
-
-    if (inputStream == null) {
-      throw new IOException("File not found: " + fileName);
-    }
-
-    try (Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) {
+    try (Scanner scanner = new Scanner(getInputStream(fileName), StandardCharsets.UTF_8)) {
       return scanner.useDelimiter("\\A").next();
     }
   }
 
   public static List<String> readInputList(String fileName) throws IOException {
-    ClassLoader classLoader = PuzzleHelper.class.getClassLoader();
-    Path filePath = Paths.get(Objects.requireNonNull(classLoader.getResource(fileName)).getPath());
+    return IOUtils.readLines(getInputStream(fileName), StandardCharsets.UTF_8);
+  }
 
-    return Files.readAllLines(filePath, StandardCharsets.UTF_8);
+  private static InputStream getInputStream(String fileName) throws IOException {
+    var classLoader = PuzzleHelper.class.getClassLoader();
+    var inputStream = classLoader.getResourceAsStream(fileName);
+    if (inputStream == null) {
+      throw new IOException("File not found: " + fileName);
+    }
+    return classLoader.getResourceAsStream(fileName);
   }
 }
