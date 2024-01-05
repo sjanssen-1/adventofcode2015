@@ -27,4 +27,26 @@ class PuzzleTest {
             .filter(aBoolean -> aBoolean)
             .count());
   }
+
+  @Test
+  void isNiceStringButLessRidiculous_shouldReturnTrue() {
+    assertTrue(Puzzle.isNiceStringButLessRidiculous("qjhvhtzxzqqjkmpb"));
+    assertTrue(Puzzle.isNiceStringButLessRidiculous("xxyxx"));
+  }
+
+  @Test
+  void isNiceStringButLessRidiculous_shouldReturnFalse() {
+    assertFalse(Puzzle.isNiceStringButLessRidiculous("uurcxstgmygtbstg"));
+    assertFalse(Puzzle.isNiceStringButLessRidiculous("ieodomkazucvgmuy"));
+  }
+
+  @Test
+  void isNiceStringButLessRidiculous_realInput() throws IOException {
+    assertEquals(
+        53,
+        PuzzleHelper.readInputList("input.txt").stream()
+            .map(Puzzle::isNiceStringButLessRidiculous)
+            .filter(aBoolean -> aBoolean)
+            .count());
+  }
 }
