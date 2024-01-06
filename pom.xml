@@ -16,6 +16,7 @@
         <module>day3</module>
         <module>day4</module>
         <module>day5</module>
+        <module>day6</module>
     </modules>
 
     <dependencyManagement>
@@ -37,6 +38,12 @@
                 <artifactId>util</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.30</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
