@@ -24,5 +24,7 @@ class PuzzleTest {
     List<String> instructions = PuzzleHelper.readInputList("input.txt");
     var wireA = Puzzle.findSignalForWire(instructions, "a");
     assertEquals(16076, wireA);
+
+    assertEquals(2797, Puzzle.findSignalForWire(instructions, "a", "b", wireA));
   }
 }

@@ -1,13 +1,34 @@
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 public class Puzzle {
+
   public static char findSignalForWire(List<String> instructions, String wire) {
+    return findSignalForWire(instructions, wire, null, 0);
+  }
+
+  public static char findSignalForWire(
+      List<String> instructions, String wire, String overrideWire, int overrideValue) {
     final Map<String, Character> wires = new HashMap<>();
-    var gates = instructions.stream().map(Gate::parse).toList();
+    var gates = instructions.stream().map(Gate::parse).collect(Collectors.toList());
+
+    // go over executable assigns
+    var it = gates.iterator();
+    while (it.hasNext()) {
+      var gate = it.next();
+      if (gate instanceof Assign && gate.canExecute(wires)) {
+        var result = gate.execute(wires);
+        wires.put(result.wire(), result.result());
+        it.remove();
+      }
+    }
+
+    // add potential override
+    wires.put(overrideWire, (char) overrideValue);
 
     while (!gates.stream().allMatch(gate -> gate.isExecuted() || !gate.canExecute(wires))) {
       for (Gate gate : gates) {
