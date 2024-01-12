@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="day8" />
         <module name="day9" />
+        <module name="day11" />
         <module name="util" />
         <module name="day6" />
         <module name="day10" />
