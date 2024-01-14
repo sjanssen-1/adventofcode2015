@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="day8" />
+        <module name="day12" />
         <module name="day9" />
         <module name="day11" />
         <module name="util" />
