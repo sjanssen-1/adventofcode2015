@@ -4,8 +4,16 @@ import lombok.Builder;
 import lombok.Setter;
 
 public class Puzzle {
-  public static int findEnabledLights(List<String> startingGrid, int steps) {
+  public static int findEnabledLights(
+      List<String> startingGrid, int steps, boolean withStuckCorners) {
     final var grid = parseGrid(startingGrid);
+
+    if (withStuckCorners) {
+      grid[0][0].setOn(true);
+      grid[0][grid[0].length - 1].setOn(true);
+      grid[grid.length - 1][0].setOn(true);
+      grid[grid.length - 1][grid[0].length - 1].setOn(true);
+    }
 
     Light[][] gridSnapshot;
     for (int i = 0; i < steps; i++) {
@@ -13,7 +21,7 @@ public class Puzzle {
 
       for (int y = 0; y < grid.length; y++) {
         for (int x = 0; x < grid[0].length; x++) {
-          if (shouldTransition(gridSnapshot, x, y)) {
+          if (shouldTransition(gridSnapshot, x, y, withStuckCorners)) {
             grid[y][x].setOn(!gridSnapshot[y][x].isOn);
           }
         }
@@ -59,7 +67,15 @@ public class Puzzle {
     return snapshot;
   }
 
-  private static boolean shouldTransition(Light[][] grid, int x, int y) {
+  private static boolean shouldTransition(Light[][] grid, int x, int y, boolean withStuckCorners) {
+    if (withStuckCorners
+        && ((x == 0 && y == 0)
+            || (x == 0 && y == grid.length - 1)
+            || (x == grid[0].length - 1 && y == 0)
+            || (x == grid[0].length - 1 && y == grid.length - 1))) {
+      return false;
+    }
+
     if (grid[y][x].isOn) {
       int onNeighbours = 0;
       for (int j = -1; j < 2; j++) {
